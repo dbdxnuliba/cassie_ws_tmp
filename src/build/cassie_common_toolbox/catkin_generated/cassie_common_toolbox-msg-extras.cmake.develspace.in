@@ -1,0 +1,2 @@
+set(cassie_common_toolbox_MESSAGE_FILES "/home/none/cassie_ws_2/src/cassie_common_toolbox/msg/cassie_control_msg.msg;/home/none/cassie_ws_2/src/cassie_common_toolbox/msg/cassie_estimation_msg.msg;/home/none/cassie_ws_2/src/cassie_common_toolbox/msg/cassie_proprioception_msg.msg;/home/none/cassie_ws_2/src/cassie_common_toolbox/msg/cassie_velocity_estimation_msg.msg")
+set(cassie_common_toolbox_SERVICE_FILES "")

@@ -1,0 +1,181 @@
+<?xml version="1.0" ?>
+<launch>
+
+<rosparam>
+    cassie:
+        is_simulation: false
+        dt: 0.0005
+        log_estimation: true
+        log_interface:  true
+        log_controller: true
+        use_ekf:        true
+        interface:
+            safe_torque_limit: '[90, 60, 90, 200, 40, 90, 60, 90, 200, 40]'
+            heelspring_solver:
+                zero_springs_on_startup: false
+                num_zeroing_samples: 2000
+            contact_classifier:
+                use_sigmoid: false
+                sigmoid_A: 0.30
+                sigmoid_B: 30
+                sigmoid_power: 1
+                linear_lb: 60
+                linear_ub: 110
+                lowpass_dt_cutoff: 0.005
+        estimation:
+            kinematics_velocity:
+                lowpass_vx_dt_cutoff: 0.06
+                lowpass_vy_dt_cutoff: 0.06
+                lowpass_vz_dt_cutoff: 0.06
+            contact_ekf:
+                apply_post_filter: false
+                post_filter_dt_cutoff_x: 0.03
+                post_filter_dt_cutoff_y: 0.03
+                post_filter_dt_cutoff_z: 0.03
+                gyro_noise_std: 0.000065
+                gyro_bias_noise_std: 0.001
+                accel_noise_std: 0.0075
+                accel_bias_noise_std: 0.005
+                contact_noise_std: 0.0001
+                encoder_noise_std: 0.000175
+                contact_std: 0.001
+                contact_yaw_std: 0.001
+                prior_base_rotation_std: 0.000001
+                prior_base_position_std: 0.0001
+                prior_base_velocity_std: 0.001
+                prior_contact_position_std: 0.0025
+                prior_gyro_bias_std: 0.00001
+                prior_accel_bias_std: 0.0001
+                prior_forward_kinematics_std: 0.003
+                prior_contact_yaw_std: 0.03
+        locomotion_control:
+            dt: 0.0005
+
+            stepping:
+                inair_qp:
+                    output_selec: '[1,1,1,1,1,1,1,1,1]'
+                    <!--       lfx  lfy  lfz  lfry  lfrz  rfx  rfy  rfz  rfry  rfrz-->
+                    kp:      '[500, 500, 500, 1000, 1000, 500, 500, 500, 1000, 1000]'
+                    kd:      '[50,  50,  50,  20,   20,   50,  50,  50,  20,   20]'
+                    weights: '[10,  10,  10,  10,   10,   10,  10,  10,  10,   10]'
+                    nQPIter: 50
+                    w_outputs: 10
+                standing_qp:
+                    output_selec: '[1,1,1,1,1,1]'
+                    <!--       xcom  ycom  zcom  roll pitch yaw -->
+                    kp:      '[2000, 2000, 2000, 500, 500,  100]'
+                    kd:      '[40,   20,   20,   20,  20,   10]'
+                    weights: '[250,  250,  50,   10,  10,   10]'
+                    nQPIter: 50
+                    w_outputs: 10
+                    reg_u: '[0.000001, 0.1, 0.000001, 0.000001, 0.0]'
+                    <!--            Fx        Fy        Fz        My        Mz-->
+                    reg_Fcontact: '[0.000001, 0.000001, 0.000100, 0.000001, 0.000001]'
+                    reg_Finteral: '[0.000001, 0.000001, 0.000001, 0.000001, 0.000001, 0.000001]'
+                walking_qp:
+                    output_selec: '[1,1,1,1,1,1,1,1,1,1]'
+
+                    <!-- ZERO-LINE STEPPING -->
+                    <!--       Roll   Pitch sthipYaw zcom   swz   swx    swy   swhipYaw delta xcom -->
+                    <!-- kp:      '[1000,  1000, 1000,    1500,  3500, 1000,  4000, 12000,  1000, 750000]'
+                    kd:      '[50,    50,   100,     200,   50,   100,   50,   250,    50,   10000]'
+                    weights: '[100,   100,  40,      2500,  100,  20000, 100,  80000,  1,    50]'  -->
+
+                    kp:      '[1000,  1000, 1000,    1500,  3500, 1000,  4000, 12000,  1000, 250000]'
+                    kd:      '[50,    50,   100,     200,   50,   100,   50,   250,    50,   10000]'
+                    weights: '[100,   100,  40,      2500,  100,  20000, 100,  80000,  1,    50]' 
+                    <!-- Walking -->
+                    <!--       Roll   Pitch sthipYaw zcom   swz   swx    swy   swhipYaw delta xcom -->
+                    <!-- kp:      '[1000,  1000, 1000,    15000, 3500, 1000,  4000, 4000,    5000,  100000]'
+                    kd:      '[50,    50,   100,     200,   50,   250,   50,   250,     250,   2000]'
+                    weights: '[100,   100,  40,      250,   1000, 4000,  1000, 8000,    50000, 50]'  -->
+
+                    nQPIter: 50
+                    w_outputs: 10
+                    reg_u: '[0.000001, 0.1, 0.000001, 0.000001, 0.0]'
+                    <!--            Fx        Fy        Fz        My      Mz-->
+                    reg_Fcontact: '[0.000001, 0.000001, 0.000001, 0.0,    10000.0]'
+                    reg_Finteral: '[0.000001, 0.000001, 0.000001, 0.000001, 0.000001, 0.000001]'
+                    c: 0.4
+                use_qp: true
+                nDomain: 2
+                time_scale: 1.0
+                vx_offset: 0.00
+                vy_offset: 0.00
+                swing_foot_offset: -0.05
+                leg_angle_offset_center: -0.03
+                u_stancetoe_offset: 0
+                stoppable_velocity_threshold: 0.2
+                  
+            HLIP:
+                control_mode: 1 <!-- 0: standing, 1: walking, -1: in air -->
+                isRigid: true
+                time_scale: 1.0
+                vx_offset: 0.00
+                vy_offset: 0.00
+                stoppable_velocity_threshold: 0.2
+                useDSP:    true
+                bh:      '[0, 0, 0, 1, 1, 1]'
+                z0des:      0.7588
+                zsw_max: 0.1
+                zsw_neg: -0.002
+                MPC_N:   5
+                xratio:  0.6
+                Edes:    0.6
+                Edes:    .5
+                Edes_eps: 0.3
+                Edes_gamma_in: 0.2
+                Edes_gamma_out: 10
+                stonex:  '[0, -0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0 , 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4, 3.6, 3.8, 4.0, 4.2]'
+                stonez:  '[0, 0,  0,     0 ,  0 ,  0  , 0 ,    0 , 0,  0,   0  ,  0,   0,      0,  0,    0,  0,    0 ,    0,   0,    0  , 0 , 0]'
+                wdes:      0.3
+                nDomain: 2
+                HLIP_udes: 0
+                nom_stand_height: 0.7588 <!-- 0.7588 -->
+                stand_radio_ratio: 0.0
+
+                <!-- walking velocities -->
+                HLIP_vxd: 0.7
+                HLIP_vyd: 0.0
+                HLIP_Ts: 0.4
+
+                <!-- added by Joris -->
+                useHLIP: false              <!-- HLIP used for gathering data and for zero stepping! -->
+                useXcomStep: 8              <!-- switch to using xcom of splines -->
+                useXswStep: 8               <!-- switch to using xsw of splines-->
+                useHumanOutputsXcomStep: 8  <!-- which step should we also use human outputs-->
+                useHumanOutputsZcomStep: 8  <!-- which step should we also use human outputs-->
+                useHumanOutputsXswStep: 8   <!-- which step should we also use human outputs-->
+                zeroStepping: false         <!-- stepping in place on x=0 line -->
+                useXcomRaibert: true       
+                Kstep: 1.7                  <!-- Raibert K and D gain -->
+                Dstep: 0.1
+</rosparam>
+
+<node name="cassie_interface_udp"
+    pkg="cassie_interface"
+    type="cassie_interface_udp"
+    args=""
+    respawn="false"
+    output="screen"
+    launch-prefix="nice -n -18 taskset -c 2"/>
+
+<node name="cassie_estimation_node"
+    pkg="cassie_estimation"
+    type="cassie_estimation_node"
+    args=""
+    respawn="false"
+    output="screen"
+    launch-prefix="nice -n -18 taskset -c 1"/>
+
+
+<node name="hardware_testing_node"
+    pkg="cassie_controllers" 
+    type="hardware_testing_node"
+    args="" 
+    respawn="false"
+    output="screen"
+    launch-prefix="nice -n -18 taskset -c 3" 
+/>
+
+</launch>

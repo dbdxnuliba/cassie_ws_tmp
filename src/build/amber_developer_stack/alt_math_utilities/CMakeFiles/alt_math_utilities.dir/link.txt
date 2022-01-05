@@ -1,0 +1,1 @@
+/usr/bin/x86_64-linux-gnu-g++-7 -fPIC -g  -shared -Wl,-soname,libalt_math_utilities.so -o ../../devel/lib/libalt_math_utilities.so CMakeFiles/alt_math_utilities.dir/src/PowFast.cpp.o 

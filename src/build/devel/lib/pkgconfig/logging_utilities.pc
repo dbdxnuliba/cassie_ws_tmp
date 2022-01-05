@@ -1,0 +1,8 @@
+prefix=/home/none/cassie_ws_2/src/build/devel
+
+Name: logging_utilities
+Description: Description of logging_utilities
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

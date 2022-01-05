@@ -1,0 +1,8 @@
+prefix=/home/none/cassie_ws_2/src/build/devel
+
+Name: yaml_eigen_utilities
+Description: Description of yaml_eigen_utilities
+Version: 0.0.0
+Cflags: -I/home/none/cassie_ws_2/src/amber_developer_stack/yaml_eigen_utilities/include -I/usr/include/eigen3
+Libs: -L${prefix}/lib 
+Requires: yaml_utilities common_assert

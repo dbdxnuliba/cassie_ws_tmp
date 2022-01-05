@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+
+    "tasks": [
+        {
+            "label": "make_debug",
+            "type": "catkin_make",
+            "args": [
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "--make-args -j1"
+            ],
+            "problemMatcher": [
+                "$catkin-gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+
+    "configurations": [
+        {
+            "name": "ROS: debug mujoco",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/none/cassie_ws_2/src/cassie_interface/launch/cassie_SLIP_mujoco.launch",
+            "preLaunchTask": "make_debug",
+        },
+        {
+            "name": "ROS: debug gazebo",
+            "type": "ros",
+            "request": "launch",
+            "target": "/home/none/cassie_ws_2/src/cassie_interface/launch/cassie_SLIP_gazebo.launch",
+            "preLaunchTask": "make_debug",
+        }
+    ]
+}

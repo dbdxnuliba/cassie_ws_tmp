@@ -1,0 +1,8 @@
+prefix=/home/none/cassie_ws_2/src/build/devel
+
+Name: control_utilities
+Description: Description of control_utilities
+Version: 0.0.0
+Cflags: -I/home/none/cassie_ws_2/src/amber_developer_stack/control_utilities/include
+Libs: -L${prefix}/lib 
+Requires: rostime

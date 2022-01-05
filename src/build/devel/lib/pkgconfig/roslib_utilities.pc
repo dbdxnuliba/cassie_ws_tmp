@@ -1,0 +1,8 @@
+prefix=/home/none/cassie_ws_2/src/build/devel
+
+Name: roslib_utilities
+Description: Description of roslib_utilities
+Version: 0.0.0
+Cflags: -I/home/none/cassie_ws_2/src/amber_developer_stack/roslib_utilities/include
+Libs: -L${prefix}/lib -lroslib_utilities
+Requires: roslib rospack
